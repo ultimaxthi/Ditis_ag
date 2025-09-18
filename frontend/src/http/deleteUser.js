@@ -3,7 +3,7 @@ import { api } from "@/lib/axios";
 export async function apiDeleteUser(id) {
   try
   {
-    const response = await api.delete(`/delete/${id}`);
+    const response = await api.delete(`users/${id}`);
     return response.data;
   } catch (error)
   {

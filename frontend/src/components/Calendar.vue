@@ -23,7 +23,7 @@ export default {
         slotMinTime: '07:00:00',
         slotMaxTime: '22:00:00',
         headerToolbar: {
-          left: '',
+          left: 'prev,next, today',
           center: 'title',
           right: '',
         },
@@ -36,18 +36,18 @@ export default {
           meridiem: false,
           hour12: false
         },
-        events: [],
+        events: this.fetchMeetings,
         eventDisplay: 'block',
         eventBackgroundColor: '#2B73B4',
         eventBorderColor: '#1e5b8e',
-        eventTextColor: '#ffffff',
+        eventTextColor:'#ffffff',
         slotLabelFormat: {
           hour: '2-digit',
           minute: '2-digit',
           hour12: false
         },
         allDaySlot: false,
-        slotEventOverlap: false,
+        slotEventOverlap:false,
         nowIndicator: true,
         businessHours: {
           daysOfWeek: [1, 2, 3, 4, 5],
@@ -57,7 +57,7 @@ export default {
         slotLabelClassNames: 'slot-label',
         dayHeaderClassNames: 'day-header',
         eventClassNames: 'calendar-event',
-        eventClick: this.handleEventClick
+        eventClick: (info) => this.handleEventClick(info)
       }
     }
   },
@@ -67,7 +67,13 @@ export default {
       const calendarApi = this.$refs.fullCalendar.getApi();
       calendarApi.changeView(view);
     },
-    async fetchMeetings() {
+    navegar(action) {
+      const calendarApi = this.$refs.fullCalendar.getApi();
+      if (action === 'next') calendarApi.next();
+      if (action === 'prev') calendarApi.prev();
+      if (action === 'today') calendarApi.today();
+    },
+    async fetchMeetings(fetchInfo, succesCallback, failureCallback) {
       this.isLoading = true;
       const userRole = localStorage.getItem('role');
 
@@ -168,7 +174,6 @@ export default {
       // Criar formatador de texto para remover quebras e múltiplos espaços
       const formatText = (text) => {
         if (!text) return '';
-        // Converter para string, remover quebras de linha e espaços múltiplos
         return String(text)
           .replace(/\r?\n|\r/g, ' ')
           .replace(/\s+/g, ' ')
@@ -225,6 +230,11 @@ export default {
     <div class="calendar-header">
       <h2 class="calendar-title">Agenda de Reuniões</h2>
       <div class="view-selector">
+
+        <button class="view-btn" @click="navegar('prev')">Anterior</button>
+        <button class="view-btn" @click="navegar('today')">Hoje</button>
+        <button class="view-btn" @click="navegar('next')">Próximo</button>
+
         <button 
           class="view-btn" 
           :class="{ active: activeView === 'dayGridMonth' }" 

@@ -26,9 +26,9 @@
           required
         />
         
-        <router-link to="/forgot-password" class="forgot-password">
+        <!-- <router-link to="/forgot-password" class="forgot-password">
           Esqueceu sua senha?
-        </router-link>
+        </router-link> -->
         
         <button type="submit" :disabled="isLoading" class="login-button">
           <span v-if="isLoading">
@@ -38,10 +38,10 @@
         </button>
       </form>
       
-      <p class="register">
+      <!-- <p class="register">
         Não tem uma conta?
         <router-link to="/register">Registre-se</router-link>
-      </p>
+      </p> -->
     </section>
 
     <p class="copyright">© 2024 by Nexgen Arch</p>
